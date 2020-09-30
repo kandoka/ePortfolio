@@ -40,8 +40,8 @@
               </el-row>
               <el-row>
                   <div>
-                    <Editor v-model="user.details"
-                            :content="user.details"
+                    <Editor
+                            v-model="user.details"
                             ref="detailsEditor"
                     />
                   </div>
@@ -68,7 +68,7 @@
           <el-footer>
             <el-col >
               <el-form-item >
-                <el-button type="primary" @click="submitForm('ruleForm')">Submit</el-button>
+                <el-button type="primary" @click="submitForm()">Submit</el-button>
                 <el-button>Cancel</el-button>
               </el-form-item>
             </el-col>
@@ -118,16 +118,32 @@
     created() {
       return axios.get('/profile/1').then(res => {
         console.log(res)
+        //取得数据
         const profileData = res.data.data
         const form = this.user
-        const e = this.$refs.detailsEditor
-        console.log(e)
+        const editor = this.$refs.detailsEditor
 
+        //页面填值
         form.userId = profileData.userId
-        console.log(profileData.details)
-        e.content = profileData.details
-        // form.details = profileData.details
+        form.details = profileData.details
+        editor.content = profileData.details
+        console.log(editor)
       })
+    },
+    methods: {
+      submitForm(){
+        // console.log(this.$refs.detailsEditor.content)
+        const form  = this.user
+        const editor = this.$refs.detailsEditor
+        form.details = editor.content
+        // console.log(this.user.details)
+        return axios.post('/profile', this.user).then(res => {
+          console.log(res)
+        })
+      },
+      // changeParentContent(val){
+      //   console.log(val)
+      // }
     }
   }
 

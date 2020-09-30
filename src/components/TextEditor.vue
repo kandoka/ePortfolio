@@ -25,11 +25,11 @@
       quillEditor
     },
     props: {
-      // content: String,
+      parentContent: String,
     },
     data(){
       return {
-        content: "",
+        content: this.parentContent,
         editorOption: {
           modules: {
             toolbar: [
@@ -68,8 +68,19 @@
         // this.content = editor.html;
         // console.log(editor);
       },
+      passToParent(){
+        this.$emit('changeParentContent', this.parentContent)
+      },
+    },
+    watch: {
+      parentContent(){
+        this.content = this.parentContent
+      }
     },
     computed: {
+      // content() {
+      //   return this.parentContent
+      // }
       // editor() {
       //   return this.$refs.myTextEditor.quillEditor;
       // }
