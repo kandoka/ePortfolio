@@ -40,11 +40,10 @@
               </el-row>
               <el-row>
                   <div>
-                    <quill-editor class="editor"
-                            v-model="user.desc"
-                            ref="myQuillEditor"
-                            :options="editorOption">
-                    </quill-editor>
+                    <Editor v-model="user.details"
+                            :content="user.details"
+                            ref="detailsEditor"
+                    />
                   </div>
               </el-row>
             </el-col>
@@ -83,43 +82,53 @@
 </template>
 
 <script>
-  import {
-    quillEditor
-  } from 'vue-quill-editor'
-  import 'quill/dist/quill.core.css'
-  import 'quill/dist/quill.snow.css'
-  import 'quill/dist/quill.bubble.css'
+  import axios from "axios";
+  import Editor from '@/components/TextEditor'
   export default {
-    name: 'FuncFormsEdit',
+    name: 'AboutMeEditor',
     components: {
-      quillEditor
+      Editor
     },
     data(){
       return {
-        labelPosition: 'right',
         user:{
+          userId: '',
           firstName:'',
           lastName:'',
           phone:'',
           email:'',
-          desc:''
+          details:''
         },
-        rules:{
-          name:[
-            { required: true, message: 'Please enter your name', trigger: 'blur' }
-          ],
-          phone:[
-            { required: true, message: 'Please enter your phone number', trigger: 'blur' }
-          ],
-          email:[
-            { required: true, message: 'Please enter your email', trigger: 'blur' }
-          ],
-          desc:[
-            { required: true, message: 'Please enter your brief introduction', trigger: 'blur' }
-          ],
-        }
+        // rules:{
+        //   name:[
+        //     { required: true, message: 'Please enter your name', trigger: 'blur' }
+        //   ],
+        //   phone:[
+        //     { required: true, message: 'Please enter your phone number', trigger: 'blur' }
+        //   ],
+        //   email:[
+        //     { required: true, message: 'Please enter your email', trigger: 'blur' }
+        //   ],
+        //   desc:[
+        //     { required: true, message: 'Please enter your brief introduction', trigger: 'blur' }
+        //   ],
+        // }
       }
     },
+    created() {
+      return axios.get('/profile/1').then(res => {
+        console.log(res)
+        const profileData = res.data.data
+        const form = this.user
+        const e = this.$refs.detailsEditor
+        console.log(e)
+
+        form.userId = profileData.userId
+        console.log(profileData.details)
+        e.content = profileData.details
+        // form.details = profileData.details
+      })
+    }
   }
 
 </script>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/views/login/Login.vue'
 import Home from '@/views/home/Home.vue'
-import TextEditor from "@/views/home/TextEditor";
+import AboutMeEditor from "../views/home/AboutMeEditor";
 Vue.use(Router)
 
 const router = new Router({
@@ -20,8 +20,8 @@ const router = new Router({
             component: Home
         },
         {
-            path: '/edit',
-            component: TextEditor
+            path: '/aboutmeeditor',
+            component: AboutMeEditor
         }
     ]
 })

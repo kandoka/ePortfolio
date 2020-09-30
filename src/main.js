@@ -10,7 +10,7 @@ import router from './router'
 import axios from 'axios'
 Vue.prototype.$http = axios
 //请求根目录
-// axios.defaults.baseURL = ''
+axios.defaults.baseURL = 'http://localhost:8080/api/v1'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
