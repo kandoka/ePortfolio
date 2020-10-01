@@ -15,13 +15,39 @@
 
             <el-col :span="5">
               <div>
-                <el-avatar
-                        icon="el-icon-user-solid"
-                        :size="200"
-                        shape="square"
-                        fit="fill"
-                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                ></el-avatar>
+<!--                <el-avatar-->
+<!--                        icon="el-icon-user-solid"-->
+<!--                        :size="200"-->
+<!--                        shape="square"-->
+<!--                        fit="fill"-->
+<!--                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"-->
+<!--                ></el-avatar>-->
+              </div>
+<!--      头像上传        -->
+<!--              <el-upload-->
+<!--                      class="upload-demo"-->
+<!--                      action="https://jsonplaceholder.typicode.com/posts/"-->
+<!--                      :on-preview="handlePreview"-->
+<!--                      :on-remove="handleRemove"-->
+<!--                      :before-remove="beforeRemove"-->
+<!--                      multiple-->
+<!--                      :limit="3"-->
+<!--                      :on-exceed="handleExceed"-->
+<!--                      :file-list="fileList">-->
+<!--                <el-button size="small" type="primary">Upload your avatar</el-button>-->
+<!--                <div slot="tip" class="el-upload__tip">Only jpg/png files without exceeding 500kb are available</div>-->
+<!--              </el-upload>-->
+              <div class="el-upload">
+                <el-upload
+                        class="avatar-uploader"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload">
+                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon" >
+                  </i>
+                </el-upload>
               </div>
             </el-col>
 
@@ -91,6 +117,7 @@
     },
     data(){
       return {
+        //用户详情
         user:{
           userId: '',
           firstName:'',
@@ -99,6 +126,10 @@
           email:'',
           details:''
         },
+        //头像地址
+        // fileList: [],
+        imageUrl: ''
+
         // rules:{
         //   name:[
         //     { required: true, message: 'Please enter your name', trigger: 'blur' }
@@ -141,6 +172,38 @@
           console.log(res)
         })
       },
+      // handleRemove(file, fileList) {
+      //   console.log(file, fileList);
+      // },
+      // handlePreview(file) {
+      //   console.log(file);
+      // },
+      // handleExceed(files, fileList) {
+      //   this.$message.warning(`You have upload ${files.length + fileList.length} files`);
+      // },
+      // beforeRemove(file, fileList) {
+      //   console.log(fileList)
+      //   return this.$confirm(`Are you sure to remove ${ file.name }?`);
+      // },
+
+      //头像上传
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('Only JPG is available!');
+        }
+        if (!isLt2M) {
+          this.$message.error('The size of image should not exceed 2MB!');
+        }
+        return isJPG && isLt2M;
+      }
+
+
       // changeParentContent(val){
       //   console.log(val)
       // }
@@ -150,21 +213,31 @@
 </script>
 
 <style scoped>
-  .el-row {
-    margin-bottom: 20px;
-  }
-  .el-col {
-    border-radius: 4px;
-  }
   .richText{
-    width: 80%;
+    width: 100%;
     height: 100%;
-    justify-self: center;
   }
-  .editor{
-    height: 200px;
+  .avatar-uploader {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
-  .bottom {
-    margin-bottom: 13px;
+  .avatar-uploader:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>

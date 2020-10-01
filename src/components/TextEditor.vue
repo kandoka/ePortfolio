@@ -93,21 +93,4 @@
 </script>
 
 <style scoped>
-  .el-row {
-    margin-bottom: 20px;
-  }
-  .el-col {
-    border-radius: 4px;
-  }
-  .richText{
-    width: 80%;
-    height: 100%;
-    justify-self: center;
-  }
-  .editor{
-    height: 200px;
-  }
-  .bottom {
-    margin-bottom: 13px;
-  }
 </style>
